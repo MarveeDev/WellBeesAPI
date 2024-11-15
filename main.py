@@ -28,6 +28,7 @@ async def websocket_distance(websocket: WebSocket):
             data = get_data_from_arduino()
 
             if data:
+                print(f"Ricevuto da Arduino: {data}")
                 # Se il messaggio contiene "distance", estrai il valore
                 if "distance:" in data:
                     # Estrai il valore della distanza
