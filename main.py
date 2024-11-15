@@ -4,7 +4,18 @@ import time
 import asyncio
 
 # Crea l'app FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+# Configura le origini consentite
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Consenti tutte le origini (modifica per produzione)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Configurazione seriale per Arduino
 arduino = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
