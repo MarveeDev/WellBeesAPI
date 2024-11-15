@@ -15,8 +15,10 @@ def get_distance_from_arduino():
     arduino.write(b"get_distance\n")
     time.sleep(0.5)
     if arduino.in_waiting > 0:
+        print("Dati disponibili")
         distance = arduino.readline().decode('utf-8').strip()  # Leggi la distanza
         return distance
+    print("Nessun dato disponibile")
     return None
 
 
@@ -36,7 +38,9 @@ async def get_ultrasonic_distance(id: int):
     """Funzione per ottenere la distanza dal sensore ultrasonico collegato ad Arduino."""
     distance = get_distance_from_arduino()
 
+    print(f"Distanza letta: {distance}")
     if distance is None:
+        print("Errore nella lettura della distanza")
         raise HTTPException(status_code=500, detail="Errore nella lettura della distanza da Arduino")
 
     return {"distance": distance}
