@@ -24,6 +24,7 @@ async def websocket_distance(websocket: WebSocket):
 
     while True:
         try:
+            print("In attesa di dati da Arduino...")
             # Ottieni i dati grezzi dalla porta seriale di Arduino
             data = get_data_from_arduino()
 
