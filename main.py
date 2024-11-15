@@ -38,6 +38,7 @@ async def websocket_distance(websocket: WebSocket):
                     # Invia il valore della distanza al client via WebSocket
                     await websocket.send_text(distance_value)
 
+            await asyncio.sleep(0.1)  # Fai una pausa per evitare sovraccarico della CPU
 
         except WebSocketDisconnect:
             print("Client disconnesso")
