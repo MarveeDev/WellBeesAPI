@@ -13,7 +13,6 @@ arduino = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)
 def get_distance_from_arduino():
     print("Richiesta di lettura della distanza dal sensore ultrasonico 2")
     arduino.write(b"get_distance\n")
-    time.sleep(0.5)
     if arduino.in_waiting > 0:
         print("Dati disponibili")
         distance = arduino.readline().decode('utf-8').strip()  # Leggi la distanza
