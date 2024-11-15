@@ -14,4 +14,3 @@ while True:
     data = get_data_from_arduino()
     if data:
         print("Dati ricevuti:", data)
-    time.sleep(1)  # Pausa di 1 secondo
