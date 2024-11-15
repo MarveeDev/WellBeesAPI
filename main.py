@@ -1,6 +1,15 @@
 import serial
 import time
 
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+
 # Configura la connessione seriale con Arduino (modifica la porta a seconda della tua configurazione)
 arduino = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)
 
