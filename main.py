@@ -6,11 +6,12 @@ import time
 app = FastAPI()
 
 
-arduino = serial.Serial('/dev/ttyAMA0', 11520, timeout=1)
+arduino = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)
 
 
 # Funzione per leggere la distanza dal sensore
 def get_distance_from_arduino():
+    print("Richiesta di lettura della distanza dal sensore ultrasonico 2")
     arduino.write(b"get_distance\n")
     time.sleep(0.5)
     if arduino.in_waiting > 0:
@@ -31,6 +32,7 @@ async def say_hello(name: str):
 
 @app.get("/ultrasonic/{id}/distance")
 async def get_ultrasonic_distance(id: int):
+    print("Richiesta di lettura della distanza dal sensore ultrasonico")
     """Funzione per ottenere la distanza dal sensore ultrasonico collegato ad Arduino."""
     distance = get_distance_from_arduino()
 
