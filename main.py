@@ -8,7 +8,7 @@ app = FastAPI()
 
 arduino = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)
 
-
+#
 # Funzione per leggere la distanza dal sensore
 def get_distance_from_arduino():
     print("Richiesta di lettura della distanza dal sensore ultrasonico 2")
