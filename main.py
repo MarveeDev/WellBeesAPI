@@ -74,11 +74,17 @@ async def websocket_data(websocket: WebSocket):
 
 import json
 
+
+
+
+import json
+import requests
+
 def askAI(question):
     print("Chiedo ad AI:", question)
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer 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"
+        "Authorization": "B312eYtyX9p5PP6i05clgVYFE6aVVmHJHicTYR4DdCWjFTbQiVS9sTT3BlbkFJyf36CL8ADXjNEvJyhz8edNsXHYTJ7WdDSDpp7XKwZy4Iz6Htq3h7HsnLotu-9CN_mdIFVGGooA"
     }
 
     payload = {
@@ -114,7 +120,7 @@ def askAI(question):
     print("Payload:", payload)
 
     try:
-        response = requests.post("https://api.openai.com/v1/engines/davinci-codex/completions", headers=headers, json=payload)
+        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
         result = response.json()
         print("Risposta AI:", result)
         if "choices" in result and result["choices"]:
@@ -127,7 +133,6 @@ def askAI(question):
     except json.JSONDecodeError as e:
         print("Errore decodifica JSON:", e)
         return "Errore JSON"
-
 # Aggiungi un endpoint per il test
 @app.get("/")
 async def root():
