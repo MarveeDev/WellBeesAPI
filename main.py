@@ -56,10 +56,10 @@ async def websocket_data(websocket: WebSocket):
                 # Se il messaggio contiene "in_temperature", estrai il valore
                 if "in_temperature:" in data:
                     # Estrai il valore della temperatura
-
                     in_temperature_value = data.split("in_temperature:")[1].strip()
                     print("sto chiamando l'AI")
-                    print(askAI("temperatura interna: "+ in_temperature_value))
+                    ai_response = askAI(f"temperatura interna: {in_temperature_value}")
+                    print(ai_response)
                     print(f"Inviando temperatura interna: {in_temperature_value}")
                     # Invia il valore della temperatura al client via WebSocket
                     await websocket.send_text(in_temperature_value)
@@ -96,8 +96,6 @@ async def websocket_data(websocket: WebSocket):
                     # Invia il valore della luminosità al client via WebSocket
                     await websocket.send_text(light_value)
 
-                # Se il messaggio contiene "
-
             await asyncio.sleep(0.1)  # Fai una pausa per evitare sovraccarico della CPU
 
         except WebSocketDisconnect:
@@ -107,6 +105,8 @@ async def websocket_data(websocket: WebSocket):
             print(f"Errore nella connessione WebSocket: {e}")
             break
 
+
+import json
 
 def askAI(question):
     headers = {
@@ -157,7 +157,6 @@ def askAI(question):
     except Exception as ex:
         print("Exception:", ex)
         return None
-
 
 # Aggiungi un endpoint per il test
 @app.get("/")
