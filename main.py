@@ -53,7 +53,10 @@ async def websocket_data(websocket: WebSocket):
                 if "in_temperature:" in data:
                     in_temperature_value = data.split("in_temperature:")[1].strip()
                     ai_response = askAI(f"temperatura interna: {in_temperature_value}")
-                    print(ai_response)
+                    if ai_response:
+                        print(f"Risposta AI: {ai_response}")
+                    else:
+                        print("Risposta AI non valida o vuota.")
                     await websocket.send_text(in_temperature_value)
 
                 # Gestisci gli altri dati come sopra
@@ -109,16 +112,17 @@ def askAI(question):
     }
 
     try:
-        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+        response = requests.post("https://api.openai.com/v1/engines/davinci-codex/completions", headers=headers, json=payload)
         result = response.json()
-
-        # Extract and clean the response
-        output = result["choices"][0]["message"]["content"].strip().lower()
-        return output
-
-    except Exception as ex:
-        print("Exception:", ex)
-        return None
+        if "choices" in result and result["choices"]:
+            output = result["choices"][0]["message"]["content"].strip().lower()
+            return output
+        else:
+            print("Formato risposta non valido:", result)
+            return "Errore nel parsing AI"
+    except json.JSONDecodeError as e:
+        print("Errore decodifica JSON:", e)
+        return "Errore JSON"
 
 # Aggiungi un endpoint per il test
 @app.get("/")
