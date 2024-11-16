@@ -105,7 +105,6 @@ async def websocket_data(websocket: WebSocket):
             break
 
 def askAI(question):
-    # key = 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
     completion = AIClient.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
