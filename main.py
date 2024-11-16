@@ -52,6 +52,7 @@ async def websocket_data(websocket: WebSocket):
 
                 if "in_temperature:" in data:
                     in_temperature_value = data.split("in_temperature:")[1].strip()
+                    print(f"Inviando temperatura interna: {in_temperature_value}")
                     ai_response = askAI(f"temperatura interna: {in_temperature_value}")
                     if ai_response:
                         print(f"Risposta AI: {ai_response}")
@@ -74,6 +75,7 @@ async def websocket_data(websocket: WebSocket):
 import json
 
 def askAI(question):
+    print("Chiedo ad AI:", question)
     headers = {
         "Content-Type": "application/json",
         "Authorization": "Bearer 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"
