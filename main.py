@@ -135,12 +135,12 @@ def askAI(question):
         return "Errore JSON"
 # Aggiungi un endpoint per il test
 
-app.get("/window/{value}")
+@app.get("/window/{value}")
 async def set_window(value: int):
     print(f"Invio comando per impostare la finestra a: {value}")
     arduino.write(f"window:{value}\n".encode())
     return {"message": f"Comando inviato per impostare la finestra a: {value}"}
-
+#
 @app.get("/")
 async def root():
     return {"message": "Hello"}
