@@ -142,7 +142,10 @@ async def set_window(value: int):
     # Invia il comando per impostare la finestra
     arduino.write(f"0{value}\n".encode())
 
-    # Attendi la risposta da Arduino
+    # Aggiungi un breve ritardo per permettere ad Arduino di rispondere
+    await asyncio.sleep(0.5)  # Aggiungi 0.5 secondi di attesa
+
+    # Leggi la risposta da Arduino
     response = get_data_from_arduino()
 
     if response:
@@ -152,7 +155,6 @@ async def set_window(value: int):
         print("Errore: nessuna risposta da Arduino")
         return {"message": "Errore nella comunicazione con Arduino"}
 
-
 @app.get("/air/{value}")
 async def set_air(value: int):
     print(f"Invio comando per impostare la qualità dell'aria a: {value}")
@@ -160,7 +162,10 @@ async def set_air(value: int):
     # Invia il comando per impostare la qualità dell'aria
     arduino.write(f"1{value}\n".encode())
 
-    # Attendi la risposta da Arduino
+    # Aggiungi un breve ritardo per permettere ad Arduino di rispondere
+    await asyncio.sleep(0.5)  # Aggiungi 0.5 secondi di attesa
+
+    # Leggi la risposta da Arduino
     response = get_data_from_arduino()
 
     if response:
@@ -170,7 +175,6 @@ async def set_air(value: int):
     else:
         print("Errore: nessuna risposta da Arduino")
         return {"message": "Errore nella comunicazione con Arduino"}
-
 
 @app.get("/")
 async def root():
