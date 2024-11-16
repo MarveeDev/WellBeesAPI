@@ -138,14 +138,40 @@ def askAI(question):
 @app.get("/window/{value}")
 async def set_window(value: int):
     print(f"Invio comando per impostare la finestra a: {value}")
+
+    # Invia il comando per impostare la finestra
     arduino.write(f"0{value}\n".encode())
-    return {"message": f"Comando inviato per impostare la finestra a: {value}"}
+
+    # Attendi la risposta da Arduino
+    response = get_data_from_arduino()
+
+    if response:
+        print(f"Risposta ricevuta da Arduino: {response}")
+        return {"message": f"Comando inviato per impostare la finestra a: {value}. Risposta da Arduino: {response}"}
+    else:
+        print("Errore: nessuna risposta da Arduino")
+        return {"message": "Errore nella comunicazione con Arduino"}
+
 
 @app.get("/air/{value}")
 async def set_air(value: int):
     print(f"Invio comando per impostare la qualità dell'aria a: {value}")
+
+    # Invia il comando per impostare la qualità dell'aria
     arduino.write(f"1{value}\n".encode())
-    return {"message": f"Comando inviato per impostare la qualità dell'aria a: {value}"}
+
+    # Attendi la risposta da Arduino
+    response = get_data_from_arduino()
+
+    if response:
+        print(f"Risposta ricevuta da Arduino: {response}")
+        return {
+            "message": f"Comando inviato per impostare la qualità dell'aria a: {value}. Risposta da Arduino: {response}"}
+    else:
+        print("Errore: nessuna risposta da Arduino")
+        return {"message": "Errore nella comunicazione con Arduino"}
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello"}
