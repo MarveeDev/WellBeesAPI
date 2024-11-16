@@ -124,12 +124,10 @@ def askAI(question):
         ]
     }
 
-    print("Payload:", payload)
 
     try:
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
         result = response.json()
-        print("Risposta AI:", result)
         if "choices" in result and result["choices"]:
             output = result["choices"][0]["message"]["content"].strip().lower()
             print("Output:", output)
