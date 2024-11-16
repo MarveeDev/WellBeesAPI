@@ -25,6 +25,8 @@ app.add_middleware(
 arduino = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
 
 
+
+
 # Funzione per leggere i dati dalla seriale di Arduino
 def get_data_from_arduino():
     if arduino.in_waiting > 0:
@@ -95,9 +97,9 @@ def askAI(question):
                 "content": """mi devi aiutare a simulare un sistema regolato da AI:
                 Il contesto è una casa domotica, basata sul benessere all'interno della casa.
                 Le feature sono:
-                - Regolazione della luce in base alla presenza o meno di persone in stanza (per esempio: se una persona è abituata ad andare in cucina alle 19, alle 19 tu accendi lievemente la luce. se dopo 5 minuti non è ancora arrivata la spegni finchè non entra) (sensore di movimento e luci regolabili)
+                - Regolazione della luce in base alla presenza o meno di persone in stanza e alla luminosità(per esempio: se una persona è abituata ad andare in cucina alle 19, alle 19 tu accendi lievemente la luce. se dopo 5 minuti non è ancora arrivata la spegni finchè non entra) (sensore di movimento e luci regolabili)
                 - Regolazione qualità dell'aria (con ventole se si è in casa, tirando giu le taparelle lasciando le righe e aprendo le finestre se sei fuori casa) (si passano valori tipo umidità dell'aria ecc)
-                - Termosifoni (regola in base alla temperatura interna ed esterna le valvole dei caloriferi)
+                - Temperatura (apertura finestra in gradi)
 
                 NOTA BENE, dovrai rispondere solamente con {"Componente": "Azione"}
                 Esempio: se io ti do {"temperatura": "30"}
@@ -135,26 +137,36 @@ def askAI(question):
         return "Errore JSON"
 # Aggiungi un endpoint per il test
 
-@app.get("/window/{sensor}/{value}")
+@app.get("/device/{sensor}/{value}")
 async def set_window(sensor: str, value: str):
     # Logica per il servomotore (se il comando è 'servo')
-    if sensor == "ventola":
+    if sensor == "servo":
         try:
             # Converti il valore in un intero (l'angolo del servomotore)
             int_value = int(value)
             print(f"Invio comando per servomotore a: {int_value} gradi")
-            arduino.write(f"dist:{int_value}\n".encode())
+            arduino.write(f"servo:{int_value}\n".encode())
             return {"message": f"Comando servomotore inviato: {int_value} gradi"}
         except ValueError:
             return {"error": "Valore non valido per il servomotore, inserisci un intero"}
 
     # Altri comandi per sensori aggiuntivi (per esempio per la temperatura)
-    elif sensor == "temp":
+    elif sensor == "vent":
         try:
             # Logica per il sensore di temperatura
             temp_value = float(value)
             print(f"Comando temperatura inviato: {temp_value}°C")
-            arduino.write(f"temp:{temp_value}\n".encode())
+            arduino.write(f"vent:{temp_value}\n".encode())
+            return {"message": f"Comando temperatura inviato: {temp_value}°C"}
+        except ValueError:
+            return {"error": "Valore non valido per la temperatura"}
+
+    elif sensor == "led":
+        try:
+            # Logica per il sensore di temperatura
+            temp_value = float(value)
+            print(f"Comando temperatura inviato: {temp_value}°C")
+            arduino.write(f"led:{temp_value}\n".encode())
             return {"message": f"Comando temperatura inviato: {temp_value}°C"}
         except ValueError:
             return {"error": "Valore non valido per la temperatura"}
