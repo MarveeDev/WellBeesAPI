@@ -78,7 +78,7 @@ def askAI(question):
     print("Chiedo ad AI:", question)
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer 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"
+        "Authorization": "Bearer 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"
     }
 
     payload = {
