@@ -138,12 +138,12 @@ def askAI(question):
 @app.get("/window/{sensor}/{value}")
 async def set_window(sensor: str, value: str):
     # Logica per il servomotore (se il comando è 'servo')
-    if sensor == "servo":
+    if sensor == "ventola":
         try:
             # Converti il valore in un intero (l'angolo del servomotore)
             int_value = int(value)
             print(f"Invio comando per servomotore a: {int_value} gradi")
-            arduino.write(f"servo:{int_value}\n".encode())
+            arduino.write(f"dist:{int_value}\n".encode())
             return {"message": f"Comando servomotore inviato: {int_value} gradi"}
         except ValueError:
             return {"error": "Valore non valido per il servomotore, inserisci un intero"}
