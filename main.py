@@ -47,14 +47,19 @@ async def websocket_data(websocket: WebSocket):
             if data:
                 print(f"Ricevuto da Arduino: {data}")
 
-                if "distance:" in data:
+                if "Distance:" in data:
                     distance_value = data.split("distance:")[1].strip()
-                    print(f"Inviando distanza: {distance_value}")
+                    ai_response = askAI(f"distanza: {distance_value}")
+                    if ai_response:
+                        print(f"Risposta AI: {ai_response}")
+                    else:
+                        print("Risposta AI non valida o vuota.")
                     await websocket.send_text(distance_value)
+
+
 
                 if "in_temperature:" in data:
                     in_temperature_value = data.split("in_temperature:")[1].strip()
-                    print(f"Inviando temperatura interna: {in_temperature_value}")
                     ai_response = askAI(f"temperatura interna: {in_temperature_value}")
                     if ai_response:
                         print(f"Risposta AI: {ai_response}")
@@ -105,8 +110,8 @@ def askAI(question):
                 Esempio: se io ti do {"temperatura": "30"}
                 tu dovrai rispondere
                 {{
-                    "finestraStanza": "20" (20 è il grado di apertura)
-                    "termosifoneStanza": "0" (spegni il termosifone)
+                    "servo": "70" (20 è il grado di apertura tra 70 e 170)
+                    "ventola": "0" (spegni il termosifone (0 o 1))
                 }}
 
                 quando poi ti manderò la temperatura e sarà scesa a 21 (hai osservato che è la temperatura media scelta dall'utente)
