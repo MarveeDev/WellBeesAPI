@@ -108,9 +108,7 @@ def askAI(question):
 
                 Eccoti il mio input: {question}"""
             }
-        ],
-        "max_tokens": 300,
-        "temperature": 0
+        ]
     }
 
     print("Payload:", payload)
