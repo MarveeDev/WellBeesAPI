@@ -151,7 +151,7 @@ async def set_window(value: int):
         arduino.write(f"{value}\n".encode())
         return {"message": f"Comando inviato per impostare la finestra a: {value}"}
     else:
-        print("Errore: risposta non valida da Arduino")
+        print("Errore: risposta non valida da Arduino, risposta:", response)
         return {"message": "Errore nella comunicazione con Arduino"}
 
 
