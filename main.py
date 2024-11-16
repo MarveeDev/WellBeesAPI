@@ -138,7 +138,7 @@ def askAI(question):
 @app.get("/window/{value}")
 async def set_window(value: int):
     print(f"Invio comando per impostare la finestra a: {value}")
-    arduino.write(f"0{value}\n".encode())
+    arduino.write(f"{value}\n".encode())
     return {"message": f"Comando inviato per impostare la finestra a: {value}"}
 #
 @app.get("/")
