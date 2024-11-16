@@ -40,67 +40,29 @@ async def websocket_data(websocket: WebSocket):
     while True:
         try:
             print("In attesa di dati da Arduino...")
-            # Ottieni i dati grezzi dalla porta seriale di Arduino
             data = get_data_from_arduino()
 
             if data:
                 print(f"Ricevuto da Arduino: {data}")
-                # Se il messaggio contiene "distance", estrai il valore
+
                 if "distance:" in data:
-                    # Estrai il valore della distanza
                     distance_value = data.split("distance:")[1].strip()
                     print(f"Inviando distanza: {distance_value}")
-                    # Invia il valore della distanza al client via WebSocket
                     await websocket.send_text(distance_value)
 
-                # Se il messaggio contiene "in_temperature", estrai il valore
                 if "in_temperature:" in data:
-                    # Estrai il valore della temperatura
                     in_temperature_value = data.split("in_temperature:")[1].strip()
-                    print("sto chiamando l'AI")
                     ai_response = askAI(f"temperatura interna: {in_temperature_value}")
                     print(ai_response)
-                    print(f"Inviando temperatura interna: {in_temperature_value}")
-                    # Invia il valore della temperatura al client via WebSocket
                     await websocket.send_text(in_temperature_value)
 
-                # Se il messaggio contiene "out_temperature", estrai il valore
-                if "out_temperature:" in data:
-                    # Estrai il valore della temperatura
-                    out_temperature_value = data.split("out_temperature:")[1].strip()
-                    print(f"Inviando temperatura esterna: {out_temperature_value}")
-                    # Invia il valore della temperatura al client via WebSocket
-                    await websocket.send_text(out_temperature_value)
+                # Gestisci gli altri dati come sopra
 
-                # Se il messaggio contiene "in_humidity", estrai il valore
-                if "in_humidity:" in data:
-                    # Estrai il valore dell'umidità
-                    humidity_value = data.split("in_humidity:")[1].strip()
-                    print(f"Inviando umidità interna: {humidity_value}")
-                    # Invia il valore dell'umidità al client via WebSocket
-                    await websocket.send_text(humidity_value)
-
-                # Se il messaggio contiene "out_humidity", estrai il valore
-                if "out_humidity:" in data:
-                    # Estrai il valore dell'umidità
-                    humidity_value = data.split("out_humidity:")[1].strip()
-                    print(f"Inviando umidità esterna: {humidity_value}")
-                    # Invia il valore dell'umidità al client via WebSocket
-                    await websocket.send_text(humidity_value)
-
-                # Se il messaggio contiene "light", estrai il valore
-                if "light:" in data:
-                    # Estrai il valore della luminosità
-                    light_value = data.split("light:")[1].strip()
-                    print(f"Inviando luminosità: {light_value}")
-                    # Invia il valore della luminosità al client via WebSocket
-                    await websocket.send_text(light_value)
-
-            await asyncio.sleep(0.1)  # Fai una pausa per evitare sovraccarico della CPU
+            await asyncio.sleep(0.1)
 
         except WebSocketDisconnect:
             print("Client disconnesso")
-            break  # Esci dal ciclo se il client si disconnette
+            break
         except Exception as e:
             print(f"Errore nella connessione WebSocket: {e}")
             break
