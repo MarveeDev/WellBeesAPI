@@ -9,7 +9,7 @@ from openai import OpenAI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-AIClient = OpenAI()
+AIClient = OpenAI(api_key="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")
 
 # Configura le origini consentite
 app.add_middleware(
