@@ -86,7 +86,7 @@ def askAI(question):
         "messages": [
             {
                 "role": "user",
-                "content": f"""mi devi aiutare a simulare un sistema regolato da AI:
+                "content": """mi devi aiutare a simulare un sistema regolato da AI:
                 Il contesto è una casa domotica, basata sul benessere all'interno della casa.
                 Le feature sono:
                 - Regolazione della luce in base alla presenza o meno di persone in stanza (per esempio: se una persona è abituata ad andare in cucina alle 19, alle 19 tu accendi lievemente la luce. se dopo 5 minuti non è ancora arrivata la spegni finchè non entra) (sensore di movimento e luci regolabili)
