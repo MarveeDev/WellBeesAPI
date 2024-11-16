@@ -145,7 +145,7 @@ async def set_window(value: int):
     # Attendi la risposta da Arduino
     response = get_data_from_arduino()
 
-    if response == "winok":
+    if "winok" in response:
         print(f"Risposta ricevuta: {response}. Impostando il numero della finestra a: {value}")
         # Dopo aver ricevuto "winok", invia il valore della finestra
         arduino.write(f"{value}\n".encode())
