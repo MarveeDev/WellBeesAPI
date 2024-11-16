@@ -106,7 +106,7 @@ def askAI(question):
                     "finestraCamera": "0"
                 }}.
 
-                Eccoti il mio input: {question}"""
+                Eccoti il mio input: """ + question
             }
         ]
     }
