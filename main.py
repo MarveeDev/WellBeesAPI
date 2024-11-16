@@ -138,23 +138,9 @@ def askAI(question):
 @app.get("/window/{value}")
 async def set_window(value: int):
     print(f"Invio comando per impostare la finestra a: {value}")
-
-    # Invia il comando per impostare la finestra
-    arduino.write(f"window\n".encode())
-
-    # Attendi la risposta da Arduino
-    response = get_data_from_arduino()
-
-    if "winok" in response:
-        print(f"Risposta ricevuta: {response}. Impostando il numero della finestra a: {value}")
-        # Dopo aver ricevuto "winok", invia il valore della finestra
-        arduino.write(f"{value}\n".encode())
-        return {"message": f"Comando inviato per impostare la finestra a: {value}"}
-    else:
-        print("Errore: risposta non valida da Arduino, risposta:", response)
-        return {"message": "Errore nella comunicazione con Arduino"}
-
-
+    arduino.write(f"window:{value}\n".encode())
+    return {"message": f"Comando inviato per impostare la finestra a: {value}"}
+#
 @app.get("/")
 async def root():
     return {"message": "Hello"}
