@@ -138,9 +138,14 @@ def askAI(question):
 @app.get("/window/{value}")
 async def set_window(value: int):
     print(f"Invio comando per impostare la finestra a: {value}")
-    arduino.write(f"window:{value}\n".encode())
+    arduino.write(f"0{value}\n".encode())
     return {"message": f"Comando inviato per impostare la finestra a: {value}"}
-#
+
+@app.get("/air/{value}")
+async def set_air(value: int):
+    print(f"Invio comando per impostare la qualità dell'aria a: {value}")
+    arduino.write(f"1{value}\n".encode())
+    return {"message": f"Comando inviato per impostare la qualità dell'aria a: {value}"}
 @app.get("/")
 async def root():
     return {"message": "Hello"}
