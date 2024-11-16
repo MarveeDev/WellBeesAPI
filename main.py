@@ -84,7 +84,7 @@ def askAI(question):
     print("Chiedo ad AI:", question)
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "B312eYtyX9p5PP6i05clgVYFE6aVVmHJHicTYR4DdCWjFTbQiVS9sTT3BlbkFJyf36CL8ADXjNEvJyhz8edNsXHYTJ7WdDSDpp7XKwZy4Iz6Htq3h7HsnLotu-9CN_mdIFVGGooA"
+        "Authorization": "key"
     }
 
     payload = {
@@ -138,9 +138,23 @@ def askAI(question):
 @app.get("/window/{value}")
 async def set_window(value: int):
     print(f"Invio comando per impostare la finestra a: {value}")
-    arduino.write(f"window:{value}\n".encode())
-    return {"message": f"Comando inviato per impostare la finestra a: {value}"}
-#
+
+    # Invia il comando per impostare la finestra
+    arduino.write(f"window\n".encode())
+
+    # Attendi la risposta da Arduino
+    response = get_data_from_arduino()
+
+    if response == "winok":
+        print(f"Risposta ricevuta: {response}. Impostando il numero della finestra a: {value}")
+        # Dopo aver ricevuto "winok", invia il valore della finestra
+        arduino.write(f"{value}\n".encode())
+        return {"message": f"Comando inviato per impostare la finestra a: {value}"}
+    else:
+        print("Errore: risposta non valida da Arduino")
+        return {"message": "Errore nella comunicazione con Arduino"}
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello"}
