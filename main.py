@@ -55,7 +55,9 @@ async def websocket_data(websocket: WebSocket):
                 # Se il messaggio contiene "in_temperature", estrai il valore
                 if "in_temperature:" in data:
                     # Estrai il valore della temperatura
+
                     in_temperature_value = data.split("in_temperature:")[1].strip()
+                    print("sto chiamando l'AI")
                     print(askAI("temperatura interna: "+ in_temperature_value))
                     print(f"Inviando temperatura interna: {in_temperature_value}")
                     # Invia il valore della temperatura al client via WebSocket
