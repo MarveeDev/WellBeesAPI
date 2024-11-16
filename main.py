@@ -135,12 +135,35 @@ def askAI(question):
         return "Errore JSON"
 # Aggiungi un endpoint per il test
 
-@app.get("/window/{value}")
-async def set_window(value: int):
-    print(f"Invio comando per impostare la finestra a: {value}")
-    arduino.write(f"{value}\n".encode())
-    return {"message": f"Comando inviato per impostare la finestra a: {value}"}
-#
+@app.get("/window/{sensor}/{value}")
+async def set_window(sensor: str, value: str):
+    # Logica per il servomotore (se il comando è 'servo')
+    if sensor == "servo":
+        try:
+            # Converti il valore in un intero (l'angolo del servomotore)
+            int_value = int(value)
+            print(f"Invio comando per servomotore a: {int_value} gradi")
+            arduino.write(f"servo:{int_value}\n".encode())
+            return {"message": f"Comando servomotore inviato: {int_value} gradi"}
+        except ValueError:
+            return {"error": "Valore non valido per il servomotore, inserisci un intero"}
+
+    # Altri comandi per sensori aggiuntivi (per esempio per la temperatura)
+    elif sensor == "temp":
+        try:
+            # Logica per il sensore di temperatura
+            temp_value = float(value)
+            print(f"Comando temperatura inviato: {temp_value}°C")
+            arduino.write(f"temp:{temp_value}\n".encode())
+            return {"message": f"Comando temperatura inviato: {temp_value}°C"}
+        except ValueError:
+            return {"error": "Valore non valido per la temperatura"}
+
+    # Gestisci eventuali comandi non riconosciuti
+    else:
+        return {"error": "Comando sensore non riconosciuto"}
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello"}
