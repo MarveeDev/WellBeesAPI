@@ -58,7 +58,7 @@ async def websocket_data(websocket: WebSocket):
 
                     in_temperature_value = data.split("in_temperature:")[1].strip()
                     print("sto chiamando l'AI")
-                    #print(askAI("temperatura interna: "+ in_temperature_value))
+                    print(askAI("temperatura interna: "+ in_temperature_value))
                     print(f"Inviando temperatura interna: {in_temperature_value}")
                     # Invia il valore della temperatura al client via WebSocket
                     await websocket.send_text(in_temperature_value)
@@ -105,6 +105,36 @@ async def websocket_data(websocket: WebSocket):
         except Exception as e:
             print(f"Errore nella connessione WebSocket: {e}")
             break
+
+def askAI(question):
+    # key = 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
+    completion = AIClient.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": """mi devi aiutare a simulare un sistema regolato da AI:
+            Il contesto è una casa domotica, basata sul benessere all'interno della casa.
+            Le feature sono:
+            - Regolazione della luce in base alla presenza o meno di persone in stanza (per esempio: se una persona è abituata ad andare in cucina alle 19, alle 19 tu accendi lievemente la luce. se dopo 5 minuti non è ancora arrivata la spegni finchè non entra) (sensore di movimento e luci regolabili)
+            - Regolazione qualità dell'aria (con ventole se si è in casa, tirando giu le taparelle lasciando le righe e aprendo le finestre se sei fuori casa) (si passano valori tipo umidità dell'aria ecc)
+            - Termosifoni (regola in base alla temperatura interna ed esterna le valvole dei caloriferi)
+            
+            NOTA BENE, dovrai rispondere solamente con {"Componente": "Azione"}
+            Esempio: se io ti do {"temperatura": "30"}
+            tu dovrai rispondere
+            {
+                 "finestraStanza": "20" (20 è il grado di apertura)
+                 "termosifoneStanza": "0" (spegni il termosifone)
+            }
+            
+            quando poi ti manderò la temperatura e sarà scesa a 21 (hai osservato che è la temperatura media scelta dall'utente)
+            {
+                 "finestraCamera": "0"
+            }.
+            
+            Eccoti il mio input: """ + question}
+        ]
+    )
+    return completion.choices[0].message.content
 
 
 # Aggiungi un endpoint per il test
